@@ -69,12 +69,22 @@ const Form = ({
                 {list.map((item,index)=>{
                     
                     return(
+                        <div className="all">
                         <li key = {index} style={{
                             textDecoration: item.isDone ? 'line-through' : 'none'}}>
                         
                             <input  type="checkbox" onChange = {handleChange(item)} className="input-checkbox" name={item.id} checked={item.isDone?"checked":""} />
                             <label>{item.value}</label>
                         </li>
+                        <div>
+                            <button className="btn btn-success btn-sm mr-3">
+                                Edit
+                            </button>
+                            <button className="btn btn-danger btn-sm" onClick={onDelete(item)}>
+                                Delete
+                            </button>
+                        </div>
+                        </div>
                     )
                         })}
             </div>
