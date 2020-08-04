@@ -1,5 +1,8 @@
 import React,{useState, Fragment,useEffect} from "react";
 import "./form.css";
+// import Modal from "./Modal";
+import Popup from "./Modal";
+
 
 
 const Form = ({
@@ -12,7 +15,10 @@ const Form = ({
     const [item,setItem] = useState('');
     const [list,setList] = useState(arr||[])
     const [checked,setChecked] = useState(false);
-    const [boolforpopulateList,setBoolforpopulateList]=useState(false)
+    const [boolforpopulateList,setBoolforpopulateList]=useState(false);
+    const [edit,setEdit] = useState(false);
+    const [editItem,setEditItem]=useState('');
+ 
     // console.log({list});
     
 
@@ -62,6 +68,9 @@ const Form = ({
         return list;
         
     }
+
+    
+    
     
     const allPage = () =>(
         all && (
@@ -77,7 +86,8 @@ const Form = ({
                             <label>{item.value}</label>
                         </li>
                         <div>
-                            <button className="btn btn-success btn-sm mr-3">
+                            <button className="btn btn-success btn-sm mr-3" onClick = {()=>{setEdit(true) 
+                                setEditItem(item)}}>
                                 Edit
                             </button>
                             <button className="btn btn-danger btn-sm" onClick={onDelete(item)}>
@@ -167,11 +177,13 @@ const Form = ({
              <button onClick = {onSubmit} className="btn btn-primary">Add</button>
              {/* {console.table({list})} */}
         </form>
-        {/* <p>item:{item},list:{JSON.stringify(list)}</p> */}
+        {/* <p>item:{item},list:{JSON.stringify(list)},edit:{edit}</p> */}
         {boolforpopulateList && populateList()}
         {allPage()}
         {activePage()}
         {completedPage()}
+        {edit&&<Popup edit={edit} list={list} setEdit={setEdit} editItem={editItem} setEditItem={setEditItem}/>}
+        
 
         </Fragment>
         
