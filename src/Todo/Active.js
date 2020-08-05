@@ -1,13 +1,19 @@
-import React from "react";
+import React,{useState} from "react";
 import Todo from "../Todo"
 import Form from "../Form";
 
 
 const Active = () =>{
+    const [active,setActive] = useState();
+    
+    const activeCount = (activefromform) =>{
+        setActive(activefromform.active);
+    }
+    
     return (
         <div className="todo">
-        <Todo/>
-        <Form active = {true}/>
+        <Todo active={active}/>
+        <Form active = "true" activeCount={activeCount}/>
         </div>
     )
 }

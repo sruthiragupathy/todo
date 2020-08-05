@@ -2,13 +2,21 @@ import React,{useState, Fragment,useEffect} from "react";
 import "./form.css";
 // import Modal from "./Modal";
 import Popup from "./Modal";
+import { getCount } from "./Count";
+// import { getCount } from "./Count";
 
 
 
 const Form = ({
     all=false,
     active = false,
-    completed = false
+    completed = false,
+    
+    
+    allCount,
+    activeCount,
+    completeCount
+    
 }) =>{
     const arr = JSON.parse(localStorage.getItem('todos'))
     // console.log({arr});
@@ -18,21 +26,33 @@ const Form = ({
     const [boolforpopulateList,setBoolforpopulateList]=useState(false);
     const [edit,setEdit] = useState(false);
     const [editItem,setEditItem]=useState('');
- 
-    // console.log({list});
+    
     
 
     useEffect(()=>{
+        
         allPage()
+        
         activePage()
+        
+
         completedPage()
+        
+
+        all && allCount(getCount(list));
+        active && activeCount(getCount(list));
+        completed && completeCount(getCount(list));
+        
+        
     },[checked])
     
     
     const populateList=()=>{
-        // console.table(list);
+        
         localStorage.setItem('todos',JSON.stringify(list))
-
+        
+        setChecked(!checked);
+        
         setBoolforpopulateList(false);
     }
     const onSubmit = (e) =>{
@@ -48,7 +68,7 @@ const Form = ({
         setList([newItem,...list])
         setItem('');
         setBoolforpopulateList(true);
-        // populateList();
+        
     }
 
     }
@@ -62,9 +82,12 @@ const Form = ({
             }
         })
         // console.log(list);
-        setChecked(!checked)
         localStorage.setItem('todos',JSON.stringify(list));
         setList(JSON.parse(localStorage.getItem('todos')))
+        setChecked(!checked)
+        
+        
+       
         return list;
         
     }
@@ -78,7 +101,7 @@ const Form = ({
                 {list.map((item,index)=>{
                     
                     return(
-                        <div className="all">
+                        <div key={index} className="all">
                         <li key = {index} style={{
                             textDecoration: item.isDone ? 'line-through' : 'none'}}>
                         
@@ -98,8 +121,9 @@ const Form = ({
                     )
                         })}
             </div>
+            
                    
-        )
+        ) 
     )
 
     const activePage = () =>(
@@ -140,11 +164,17 @@ const Form = ({
                 localStorage.setItem('todos',JSON.stringify(list))
                 completed = true;
                 setChecked(!checked)
+                
+                
+                
+                
 
 
             }
         })
     }
+
+
 
     const completedPage = () =>(
         completed && (
@@ -153,7 +183,7 @@ const Form = ({
                     if(item.isDone === true){
                         return(
                             <ul key={index} className = "completed">
-                            <li style={{textDecoration:"line-through"}}>{item.value}</li>
+                            <li key={index} style={{textDecoration:"line-through"}}>{item.value}</li>
                             <button className="btn btn-danger btn-sm" onClick = {onDelete(item)}>Delete</button>
                             </ul>
                     
@@ -165,7 +195,7 @@ const Form = ({
         )
 
     )
-
+    
     return (
         <Fragment>
         <form className="form">
